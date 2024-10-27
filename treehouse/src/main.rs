@@ -18,48 +18,66 @@ fn get_name_input() -> String {
     name
 }
 
+fn what_is_your_name() -> String {
+    println!("What is your name?");
+
+    get_name_input()
+}
+
 fn main() {
-    println!("Hello, what is your name?");
-
-    let name = get_name_input();
-    
-    println!("Hello, {name}");
-    println!("{:?} is {} characters long", name, name.len());
-    println!("{:?} trimmed name", name.trim());
-
-    if name.trim().to_lowercase() == "Kuba".to_lowercase() {
-        println!("You are Kuba");
-    }
-    else {
-        println!("You are not Kuba");
-    }
-
-    arrays::run();
-
-    println!("Can Kuba enter? {}", arrays::allow("Kuba"));
-    let mut result1 = arrays::allow("Kuba");
-    println!("Can Kuba enter? {result1}");
-    println!("Can John enter? {}", arrays::allow("John"));
-    result1 = arrays::allow("John");
-    println!("Can John enter? {result1}");
+    // println!("Hello, what is your name?");
+    //
+    // let name = get_name_input();
+    //
+    // println!("Hello, {name}");
+    // println!("{:?} is {} characters long", name, name.len());
+    // println!("{:?} trimmed name", name.trim());
+    //
+    // if name.trim().to_lowercase() == "Kuba".to_lowercase() {
+    //     println!("You are Kuba");
+    // }
+    // else {
+    //     println!("You are not Kuba");
+    // }
+    //
+    // arrays::run();
+    //
+    // println!("Can Kuba enter? {}", arrays::allow("Kuba"));
+    // let mut result1 = arrays::allow("Kuba");
+    // println!("Can Kuba enter? {result1}");
+    // println!("Can John enter? {}", arrays::allow("John"));
+    // result1 = arrays::allow("John");
+    // println!("Can John enter? {result1}");
 
     visitors();
 }
 
 fn visitors() {
-    
-    let visitors_list = [
-        Visitor::new("Kuba", "Hello Kuba"),
-        Visitor::new("John", "Hello John"),
-        Visitor::new("Jane", "Hello Jane"),
+
+    let mut visitor_list = vec![
+        Visitor::new("Kuba", "Hello Kuba, enjoy your treehouse."),
+        Visitor::new("Jane", "Hi Jane. Your soda is in the fridge."),
+        Visitor::new("John", "Wow, who invited John?"),
     ];
 
-    let allowed_visitors = visitors_list
-        .iter()
-        .find(|visitor| visitor.name == "Kuba");
+    loop {
+        println!("Hello, what's your name? (Leave empty and press ENTER to quit)");
+        let name = what_is_your_name();
 
-    match allowed_visitors {
-        Some(visitor) => visitor.greet_visitor(),
-        None => println!("No visitors allowed"),
+        let known_visitor = visitor_list.iter().find(|visitor| visitor.name == name);
+        match known_visitor {
+            Some(visitor) => visitor.greet_visitor(),
+            None => {
+                if name.is_empty() {    // (1)
+                    break;  // (2)
+                } else {
+                    println!("{} is not on the visitor list.", name);
+                    visitor_list.push(Visitor::new(&name, "New friend"));
+                }
+            }
+        }
     }
+
+    println!("The final list of visitors:");
+    println!("{:#?}", visitor_list);
 }

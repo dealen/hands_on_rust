@@ -6,6 +6,7 @@ str is a string slice, a reference to a UTF-8 encoded string in memory.
 String is a heap-allocated string. It is growable, mutable and owned.
 */
 
+#[derive(Debug)]
 pub struct Visitor
 {
     pub name: String,
