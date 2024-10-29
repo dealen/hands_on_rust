@@ -5,6 +5,7 @@ mod visitor;
 
 use std::io::stdin;
 use visitor::Visitor;
+use crate::VisitorAction::{Accept, AcceptWithNote, Refuse, Probation};
 
 fn main() {
     // println!("Hello, what is your name?");
@@ -34,6 +35,14 @@ fn main() {
     visitors();
 }
 
+#[derive(Debug)]
+enum VisitorAction {
+    Accept,
+    AcceptWithNote { note: String },
+    Refuse,
+    Probation,
+}
+
 fn get_name_input() -> String {
     let mut name = String::new();
 
@@ -55,9 +64,9 @@ fn what_is_your_name() -> String {
 fn visitors() {
 
     let mut visitor_list = vec![
-        Visitor::new("Kuba", "Hello Kuba, enjoy your treehouse."),
-        Visitor::new("Jane", "Hi Jane. Your soda is in the fridge."),
-        Visitor::new("John", "Wow, who invited John?"),
+        Visitor::new("Kuba", Accept, 36),
+        Visitor::new("Jane", AcceptWithNote { note: String::from("Loves dogs") }, 24),
+        Visitor::new("John", Refuse, 12),
     ];
 
     loop {
@@ -80,7 +89,7 @@ fn visitors() {
                 else
                 {
                     println!("{name} is not on the visitor list.");
-                    visitor_list.push(Visitor::new(&name, "New friend"));
+                    visitor_list.push(Visitor::new(&name, Probation, 0));
                 }
             }
         }
