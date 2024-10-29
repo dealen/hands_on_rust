@@ -6,24 +6,6 @@ mod visitor;
 use std::io::stdin;
 use visitor::Visitor;
 
-fn get_name_input() -> String {
-    let mut name = String::new();
-
-    // by using & we are passing a reference to the variable name
-    // by using mut we are allowing the variable to be mutable
-    stdin()
-        .read_line(&mut name)
-        .expect("Failed to read line");
-
-    name
-}
-
-fn what_is_your_name() -> String {
-    println!("What is your name?");
-
-    get_name_input()
-}
-
 fn main() {
     // println!("Hello, what is your name?");
     //
@@ -52,6 +34,24 @@ fn main() {
     visitors();
 }
 
+fn get_name_input() -> String {
+    let mut name = String::new();
+
+    // by using & we are passing a reference to the variable name
+    // by using mut we are allowing the variable to be mutable
+    stdin()
+        .read_line(&mut name)
+        .expect("Failed to read line");
+
+    name
+}
+
+fn what_is_your_name() -> String {
+    println!("What is your name?");
+
+    get_name_input()
+}
+
 fn visitors() {
 
     let mut visitor_list = vec![
@@ -63,15 +63,23 @@ fn visitors() {
     loop {
         println!("Hello, what's your name? (Leave empty and press ENTER to quit)");
         let name = what_is_your_name();
+        println!("{name:?}");
 
-        let known_visitor = visitor_list.iter().find(|visitor| visitor.name == name);
+        let name = name.trim();
+        println!("{name:?}");
+
+        let known_visitor = visitor_list.iter().find(|visitor| visitor.name == name.to_lowercase());
+
         match known_visitor {
             Some(visitor) => visitor.greet_visitor(),
             None => {
-                if name.is_empty() {    // (1)
-                    break;  // (2)
-                } else {
-                    println!("{} is not on the visitor list.", name);
+                if name.is_empty()
+                {
+                    break;
+                }
+                else
+                {
+                    println!("{name} is not on the visitor list.");
                     visitor_list.push(Visitor::new(&name, "New friend"));
                 }
             }
