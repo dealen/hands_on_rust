@@ -25,7 +25,7 @@ impl Player {
         }
         self.y += self.velocity as i32;
         self.x += 1;
-        if (self.y < 0){
+        if self.y < 0 {
             self.y = 0;
         }
     }
