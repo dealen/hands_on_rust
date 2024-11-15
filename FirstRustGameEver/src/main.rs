@@ -1,6 +1,7 @@
 mod game_mode;
 mod state;
 mod player;
+mod obstacle;
 
 use bracket_lib::prelude::*;
 use crate::game_mode::GameMode;
